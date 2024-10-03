@@ -7,7 +7,7 @@ def df(x):
     return 4044.8 + 2*1614.77*x + 3*308.576*x**2 + 4*28.3001*x**3 + 5*x**4
 
 # Implementação do método de Newton
-def newton(x0, tol=1e-6, max_iter=100):
+def newton(x0, tol=1e-6, max_iter=5):
     iteracoes = []
     for k in range(max_iter):
         fxk = f(x0)
@@ -42,7 +42,7 @@ def exibir_resultados_newton(resultados):
     print(f"{'k':<3} {'xk':<15} {'f(xk)':<20} {'df(xk)':<20} {'ERk':<20}")
     
     for k, xk, fxk, dfxk, er in resultados:
-        print(f"{k:<3} {xk:<15.10f} {fxk:<20.15e} {dfxk:<20.10e} {er:<20.10e}")
+        print(f"{k+1:<3} {xk:<15.10f} {fxk:<20.15e} {dfxk:<20.10e} {er:<20.9e}")
 
     print(f"Raíz z2 = {resultados[-1][1]:.9f}")
 
