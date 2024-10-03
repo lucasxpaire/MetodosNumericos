@@ -1,6 +1,9 @@
 def f(x):
     # Função ajustada conforme sua descrição
     return 3880.73 + 4044.8 * x + 1614.77 * x**2 + 308.576 * x**3 + 28.3001 * x**4 + x**5
+    #minha função
+    #return = x5 + 35.3346x4 + 495.069x3 + 3436.98x2 + 11819.8x + 16104.6
+    #return 16104.6 + 11819.8*x + 3436.98*x**2 + 495.069*x**3 + 35.3346*x**4 + x**5
 
 def metodo_bisseccao(a, b, tol, max_iter):
     if f(a) * f(b) >= 0:
