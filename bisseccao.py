@@ -8,7 +8,9 @@ def metodo_bisseccao(a, b, tol, max_iter):
         return None
 
     print("MÉTODO DA BISSECÇÃO É DETERMINAÇÃO DA RAÍZ z1")
-    print("k\t ak\t\t xk\t\t bk\t\t f(a_k)\t\t f(x_k)\t\t f(b_k)\t\t ER_k")
+    
+    # Títulos das colunas com espaçamento ajustado
+    print(f"{'k':<4} {'ak':<20} {'xk':<20} {'bk':<20} {'f(a_k)':<20} {'f(x_k)':<20} {'f(b_k)':<20} {'ER_k':<20}")
 
     x_prev = None  # Inicializa x_prev como None para a primeira iteração
     k = 0
@@ -26,11 +28,11 @@ def metodo_bisseccao(a, b, tol, max_iter):
         else:
             erro_relativo = float('inf')  # Primeira iteração não calcula erro
 
-        # Impressão da linha
+        # Impressão da linha com espaçamento fixo
         if k == 0:
-            print(f"{k}\t {a:.10f}\t {xk:.10f}\t {b:.10f}\t {f_a:.10f}\t {f_x:.10f}\t {f_b:.10f}\t {'-'}")
+            print(f"{k:<4} {a:<20.10e} {xk:<20.10e} {b:<20.10e} {f_a:<20.10e} {f_x:<20.10e} {f_b:<20.10e} {'-':<20}")
         else:
-            print(f"{k}\t {a:.10f}\t {xk:.10f}\t {b:.10f}\t {f_a:.10f}\t {f_x:.10f}\t {f_b:.10f}\t {erro_relativo:.10f}")
+            print(f"{k:<4} {a:<20.10e} {xk:<20.10e} {b:<20.10e} {f_a:<20.10e} {f_x:<20.10e} {f_b:<20.10e} {erro_relativo:<20.10e}")
 
         # Atualiza os limites com base no sinal de f(a) * f(xk)
         if f_a * f_x < 0:
@@ -42,7 +44,7 @@ def metodo_bisseccao(a, b, tol, max_iter):
         k += 1  # Incrementa o contador de iterações
 
     # Exibe a raiz encontrada
-    print(f"Raíz z1 = {xk:.9f}")
+    print(f"\nRaíz z1 = {xk:.10e}")
 
 # Parâmetros de entrada
 a = -9.0  # Limite inferior
