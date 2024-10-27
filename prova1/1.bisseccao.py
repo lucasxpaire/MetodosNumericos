@@ -1,6 +1,7 @@
 def f(x):
     # Função fornecida
-    return 3880.73 + 4044.8 * x + 1614.77 * x**2 + 308.576 * x**3 + 28.3001 * x**4 + x**5
+    #x^5 + 35.3346x^4 + 495.069x^3 + 3436.98x^2 + 11819.8x + 16104.6
+    return 16104.6 + 11819.8 * x + 3436.98 * x**2 + 495.069 * x**3 + 35.3346 * x**4 + x**5
 
 def metodo_bisseccao(a, b, tol, max_iter):
     if f(a) * f(b) >= 0:
@@ -10,7 +11,7 @@ def metodo_bisseccao(a, b, tol, max_iter):
     print("MÉTODO DA BISSECÇÃO É DETERMINAÇÃO DA RAÍZ z1")
     
     # Títulos das colunas com espaçamento ajustado
-    print(f"{'k':<4} {'ak':<20} {'xk':<20} {'bk':<20} {'f(a_k)':<20} {'f(x_k)':<20} {'f(b_k)':<20} {'ER_k':<20}")
+    print(f"{'k':<4} {'ak':<20} {'xk':<20} {'bk':<20} {'f(ak)':<20} {'f(xk)':<20} {'f(bk)':<20} {'ERk':<20}")
 
     x_prev = None  # Inicializa x_prev como None para a primeira iteração
     k = 0
@@ -48,7 +49,7 @@ def metodo_bisseccao(a, b, tol, max_iter):
 
 # Parâmetros de entrada
 a = -9.0  # Limite inferior
-b = -8.0  # Limite superior
+b = -5.0  # Limite superior
 tolerancia = 1e-6  # Tolerância para erro relativo
 max_iteracoes = 100  # Número máximo de iterações
 
