@@ -3,15 +3,18 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # Dados fornecidos
-x = np.array([1.07118, 0.87691, 0.740587, 1.3449, 1.40753, 1.49681, 0.54692, 1.67324, 0.338935, 0.199134])
-y = np.array([0.197905, 0.265178, 0.055113, 2.35749, 2.92806, 4.66274, -0.0632531, 4.30248, 1.17692, 2.21001])
-z = 1.03  # Ponto em que estimar
+#x = np.array([1.07118, 0.87691, 0.740587, 1.3449, 1.40753, 1.49681, 0.54692, 1.67324, 0.338935, 0.199134])
+#y = np.array([0.197905, 0.265178, 0.055113, 2.35749, 2.92806, 4.66274, -0.0632531, 4.30248, 1.17692, 2.21001])
+#z = 1.03  # Ponto em que estimar
 #########################
-#MEUS VALORES:
-# x = np.array([0.18086, 0.338991, 0.594431, 0.700167, 0.947665, 1.08259, 1.15499, 1.35937, 1.77602, 1.69412])
-# y = np.array([1.64832, 0.994142, -0.13861, -0.00884923, 0.264026, 0.174269, 0.322003, 2.56192, 5.2004, 3.90226])
-# z = 1.67
+# MEUS VALORES:
+x = np.array([0.18086, 0.338991, 0.594431, 0.700167, 0.947665, 1.08259, 1.15499, 1.35937, 1.77602, 1.69412])
+y = np.array([1.64832, 0.994142, -0.13861, -0.00884923, 0.264026, 0.174269, 0.322003, 2.56192, 5.2004, 3.90226])
+z = 1.67
 ########################
+#x = np.array([0.192692, 0.373353, 0.555951, 0.700095, 0.820399, 1.12338, 1.20815, 1.31477, 1.5514, 1.8848])
+#y = np.array([2.16185, 0.703623, -0.102417, -0.0110756, 0.244729, 0.232499, 0.757545, 1.60944, 4.53903, 6.52634])
+#z = 0.466
 
 # Função para calcular a tabela de diferenças divididas
 def divided_differences(x, y):
@@ -37,20 +40,31 @@ def newton_interpolating_polynomial(x, coef, z):
         p += term
     return p
 
+# Função para ordenar os pontos pela proximidade com z
+def sort_by_proximity(x, y, z):
+    sorted_indices = np.argsort(np.abs(x - z))  # Índices ordenados pela distância a z
+    return x[sorted_indices], y[sorted_indices]
+
+# Função para formatar os valores
+def format_value(value):
+    if isinstance(value, (float, int)):
+        return f"{value:.6f}"  # Formata com 6 casas decimais
+    return value
+
+# Ordena os pontos pela proximidade com z
+x_sorted, y_sorted = sort_by_proximity(x, y, z)
+
 # Calcula a tabela de diferenças divididas
-coef = divided_differences(x, y)
+coef = divided_differences(x_sorted, y_sorted)
 
 # Exibe a tabela de diferenças divididas
 print("\nTABELA DE DIFERENÇAS DIVIDIDAS | z =", z)
 print("-" * 175)
-headers = ["x", "y"] + [f"DD{i}" for i in range(1, len(x))]  # Cabeçalhos das diferenças divididas
-table = np.hstack((x.reshape(-1, 1), y.reshape(-1, 1), coef[:, 1:]))  # Tabela de coeficientes
+headers = ["x", "y"] + [f"DD{i}" for i in range(1, len(x_sorted))]  # Cabeçalhos das diferenças divididas
+table = np.hstack((x_sorted.reshape(-1, 1), y_sorted.reshape(-1, 1), coef[:, 1:]))  # Tabela de coeficientes
 df_table = pd.DataFrame(table, columns=headers)
 
 # Formata e centraliza os valores para exibição
-def format_value(val, threshold=1e-10):
-    return "-" if abs(val) < threshold else f"{val:.6f}"
-
 formatted_table = df_table.apply(lambda col: col.map(format_value) if col.name != "x" else col)
 formatted_table_str = formatted_table.to_string(index=False, col_space=15, justify="center")
 print(formatted_table_str)
@@ -68,7 +82,7 @@ erro_relativo_anterior = None  # Variável para armazenar o erro relativo da ite
 erros_relativos = []
 
 for k in range(0, 10):
-    valor = newton_interpolating_polynomial(x[:k+1], coef[:k+1, :], z)  # Usando coef até k+1
+    valor = newton_interpolating_polynomial(x_sorted[:k+1], coef[:k+1, :], z)  # Usando coef até k+1
     
     # Cálculo do erro relativo, se k >= 1
     if k == 0:
@@ -108,11 +122,11 @@ plt.figure(figsize=(12, 10))  # Tamanho da figura
 
 for i, k in enumerate(polinomios):
     # Calcula os valores do polinômio
-    y_vals = [newton_interpolating_polynomial(x[:k+1], coef[:k+1, :], xv) for xv in x_vals]
+    y_vals = [newton_interpolating_polynomial(x_sorted[:k+1], coef[:k+1, :], xv) for xv in x_vals]
     
     plt.subplot(2, 2, i+1)  # Subgráficos organizados em 2 linhas e 2 colunas
     plt.plot(x_vals, y_vals, label=f'$P_{k}(x)$')
-    plt.scatter(x, y, color='black', zorder=5)  # Adiciona os pontos originais
+    plt.scatter(x_sorted, y_sorted, color='black', zorder=5)  # Adiciona os pontos originais
     plt.title(f'$P_{k}(x)$')
     plt.xlabel('$x$')
     plt.ylabel('$y$')
